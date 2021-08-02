@@ -1,4 +1,4 @@
-import { Cart, Product } from './context';
+import { Cart, nextId, Product } from './context';
 
 type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -12,12 +12,14 @@ type ActionMap<M extends { [index: string]: any }> = {
 };
 
 export enum Types {
+  FETCH = 'FETCH_PRODUCTS',
   CREATE = 'CREATE_PRODUCT',
   DELETE = 'DELETE_PRODUCT',
   ADD = 'ADD_PRODUCT'
 }
 
 type ProductPayload = {
+  [Types.FETCH]: undefined;
   [Types.CREATE]: { id: number; name: string; price: number };
   [Types.DELETE]: { id: number };
 };
@@ -35,11 +37,13 @@ export const productReducer = (
   action: ProductActions | ShoppingCartActions
 ) => {
   switch (action.type) {
+    case 'FETCH_PRODUCTS':
+      return [...state];
     case 'CREATE_PRODUCT':
       return [
         ...state,
         {
-          id: action.payload.id,
+          id: nextId + 1,
           name: action.payload.name,
           price: action.payload.price
         }

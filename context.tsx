@@ -4,9 +4,10 @@ import {
   productReducer,
   shoppingCartReducer,
   ProductActions,
-  ShppingCartActions
+  ShoppingCartActions
 } from './reducers';
 
+let nextId: number = 0;
 type Product = {
   id: number;
   name: string;
@@ -27,7 +28,7 @@ const initialState = {
 
 const AppContext = createContext<{
   state: InitialStateType;
-  dispatch: React.Dispatch<ProductActions | ShppingCartActions>;
+  dispatch: React.Dispatch<ProductActions | ShoppingCartActions>;
 }>({
   state: initialState,
   dispatch: () => null
@@ -35,7 +36,7 @@ const AppContext = createContext<{
 
 const mainReducer = (
   { products, shoppingCart }: InitialStateType,
-  action: ProductActions | ShppingCartActions
+  action: ProductActions | ShoppingCartActions
 ) => ({
   products: productReducer(products, action),
   shoppingCart: shoppingCartReducer(shoppingCart, action)
@@ -50,4 +51,4 @@ const AppProvider: React.FC = ({ children }) => {
   );
 };
 
-export { AppContext, AppProvider, Product, Cart };
+export { AppContext, AppProvider, Product, Cart, nextId };

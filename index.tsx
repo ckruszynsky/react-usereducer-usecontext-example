@@ -1,31 +1,24 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { render } from 'react-dom';
+import { AppProvider } from './context';
 import Hello from './Hello';
+import { NewProduct } from './NewProduct';
+import { Products } from './Products';
 import './style.css';
 
-interface AppProps { }
-interface AppState {
-  name: string;
-}
-
-class App extends Component<AppProps, AppState> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: 'React'
-    };
-  }
-
-  render() {
-    return (
+const App: React.FC = () => {
+  const [addNewProduct, setAddNewProduct] = React.useState(false);
+  const onProductAdded = () => {
+    setAddNewProduct(false);
+  };
+  return (
+    <AppProvider>
       <div>
-        <Hello name={this.state.name} />
-        <p>
-          Start editing to see some magic happen :)
-        </p>
+        <button onClick={e => setAddNewProduct(true)}>Add New Product</button>
       </div>
-    );
-  }
-}
-
+      {addNewProduct && <NewProduct onProductAdded={onProductAdded} />}
+      {!addNewProduct && <Products />}
+    </AppProvider>
+  );
+};
 render(<App />, document.getElementById('root'));
